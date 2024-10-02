@@ -8,7 +8,7 @@ interface SortOptionsProps {
 const SortOptions: React.FC<SortOptionsProps> = ({ onSort }) => {
   return (
     <div className="mb-4">
-      <label className="mr-2">Sắp xếp theo:</label>
+      <label className="mr-2">Sort by:</label>
       <select
         onChange={(e) => {
           const [key, order] = e.target.value.split(",");
@@ -16,12 +16,12 @@ const SortOptions: React.FC<SortOptionsProps> = ({ onSort }) => {
         }}
         defaultValue="quantity,asc" // Giá trị mặc định
       >
-        <option value="quantity,asc">Số lượng (Tăng dần)</option>
-        <option value="quantity,desc">Số lượng (Giảm dần)</option>
-        <option value="price,asc">Giá (Tăng dần)</option>
-        <option value="price,desc">Giá (Giảm dần)</option>
-        <option value="name,asc">Tên (Tăng dần)</option>
-        <option value="name,desc">Tên (Giảm dần)</option>
+        <option value="quantity,asc">Quantity (Low to High)</option>
+        <option value="quantity,desc">Quantity (High to Low)</option>
+        <option value="price,asc">Price (Low to High)</option>
+        <option value="price,desc">Price (High to Low)</option>
+        <option value="name,asc">Name (Low to High)</option>
+        <option value="name,desc">Name (High to Low)</option>
       </select>
     </div>
   );

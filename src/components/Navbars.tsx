@@ -1,18 +1,34 @@
-// Navbars.tsx
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTerm } from "../redux/Slices/searchSlice";
 import { selectTotalQuantity } from "../redux/Slices/cartSlice";
+import { logout, setUser } from "../redux/Slices/userSlice";
 
-function Navbars() {
+const Navbars: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const totalQuantity = useSelector(selectTotalQuantity);
+  const username = useSelector((state: any) => state.user.username);
+
+  useEffect(() => {
+    // Kiểm tra nếu có người dùng trong localStorage và cập nhật Redux
+    const user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+    if (user) {
+      dispatch(setUser({ username: user.username }));
+    }
+  }, [dispatch]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(event.target.value)); // Gửi từ khóa tìm kiếm vào Redux
+    dispatch(setSearchTerm(event.target.value));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    dispatch(logout()); // Cập nhật trạng thái người dùng trong Redux
+    navigate("/login");
   };
 
   return (
@@ -21,6 +37,7 @@ function Navbars() {
         <div className="text-2xl font-bold">
           <Link to="/">Huy Shop</Link>
         </div>
+
         <div className="relative flex-1 mx-4">
           <form>
             <input
@@ -32,6 +49,7 @@ function Navbars() {
             <FaSearch className="absolute top-3 right-3 text-blue-500" />
           </form>
         </div>
+
         <div className="flex items-center space-x-4">
           <Link to="/cart" className="relative">
             <FaShoppingCart className="text-lg" />
@@ -41,17 +59,33 @@ function Navbars() {
               </span>
             )}
           </Link>
-          <Link to="/login" className="hidden md:block">
-            Login
-          </Link>
-          <Link to="/register" className="hidden md:block">
-            Sign up
-          </Link>
-          <span className="block md:hidden">
-            <FaUser />
-          </span>
+
+          {username ? (
+            <>
+              <span className="font-bold">{username}</span>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hidden md:block">
+                Login
+              </Link>
+              <Link to="/register" className="hidden md:block">
+                Sign up
+              </Link>
+              <span className="block md:hidden">
+                <FaUser />
+              </span>
+            </>
+          )}
         </div>
       </div>
+
       <div className="flex items-center justify-center space-x-10 py-4 text-sm font-bold">
         <Link to="/" className="hover:underline">
           Home
@@ -59,15 +93,15 @@ function Navbars() {
         <Link to="/shop" className="hover:underline">
           Shop
         </Link>
-        <Link to="/" className="hover:underline">
+        <Link to="/contact" className="hover:underline">
           Contact Us
         </Link>
-        <Link to="/" className="hover:underline">
-          About
+        <Link to="/admin" className="hover:underline">
+          Admin
         </Link>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbars;

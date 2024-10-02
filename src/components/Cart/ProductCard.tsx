@@ -134,11 +134,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          Trang trước
+          Previos Page
         </button>
 
         <p>
-          Trang {currentPage} trên {totalPages}
+          Page {currentPage} of {totalPages}
         </p>
 
         <button
@@ -148,7 +148,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
             currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          Trang tiếp theo
+          Next Page
         </button>
       </div>
     </div>
