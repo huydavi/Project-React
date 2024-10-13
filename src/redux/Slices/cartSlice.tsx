@@ -37,6 +37,11 @@ const cartSlice = createSlice({
     removeFromCart(state, action: PayloadAction<number>) {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+
+    clearCart(state) {
+      // Thêm hàm này
+      state.items = [];
+    },
   },
 });
 
@@ -46,6 +51,6 @@ export const selectTotalQuantity = (state: { cart: CartState }): number =>
     (total: number, item: CartItem) => total + item.quantity,
     0
   );
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
 export const selectCartItems = (state: any) => state.cart.items;
 export default cartSlice.reducer;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-8 px-4 md:px-16 lg:px-24">
+    <footer className="bg-blue-900 text-white py-8 px-4 md:px-16 lg:px-24">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-xl font-semibold">Huy-shop</h3>
@@ -60,7 +60,7 @@ function Footer() {
               placeholder="Enter Email"
               className="w-full p-2 rounded-l-lg bg-gray-800 border border-gray-600"
             />
-            <button className="bg-red-600 text-white px-4 rounded-xl">
+            <button className="bg-blue-600 text-white px-4 rounded-xl">
               Subcribe me
             </button>
           </form>

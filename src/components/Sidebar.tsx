@@ -18,10 +18,10 @@ const Sidebar = () => {
   const getCategories = async () => {
     try {
       const response = await axiosClient.get("/categories");
-      console.log(response); // Kiểm tra cấu trúc
+      console.log(response); 
 
-      // Thay đổi đường dẫn này nếu cần
-      const data = response.data || response; // Thay đổi ở đây nếu cần
+
+      const data = response.data || response; 
 
       if (Array.isArray(data)) {
         setCategories(data as Category[]);

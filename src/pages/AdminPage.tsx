@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import ReactPaginate from "react-paginate";
 
 interface Product {
   id: number;
@@ -13,7 +14,9 @@ interface Product {
 const AdminPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string>(""); // State for success message
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const productsPerPage = 5;
 
   useEffect(() => {
     axios
@@ -52,8 +55,8 @@ const AdminPage: React.FC = () => {
       .post("http://localhost:3000/products", product)
       .then((response) => {
         setProducts([...products, response.data]);
-        setSuccessMessage("Product added successfully!"); // Show success message
-        formik.resetForm(); // Reset form
+        setSuccessMessage("Product added successfully!");
+        formik.resetForm();
       })
       .catch((error) => console.error("Error adding product:", error));
   };
@@ -69,7 +72,7 @@ const AdminPage: React.FC = () => {
             )
           );
           setEditingProduct(null);
-          setSuccessMessage("Product updated successfully!"); // Show success message
+          setSuccessMessage("Product updated successfully!");
         })
         .catch((error) => console.error("Error updating product:", error));
     }
@@ -86,18 +89,26 @@ const AdminPage: React.FC = () => {
     setEditingProduct(product);
   };
 
+  const displayedProducts = products.slice(
+    currentPage * productsPerPage,
+    currentPage * productsPerPage + productsPerPage
+  );
+
+  const handlePageClick = (data: { selected: number }) => {
+    setCurrentPage(data.selected);
+    window.scrollTo(0, 0); // Cuộn lên đầu trang
+  };
+
   return (
-    <div className="admin-page container mx-auto">
+    <div className="container admin-page container mx-auto">
       <h1 className="text-2xl font-bold mb-4">Product Management</h1>
 
-      {/* Success message */}
       {successMessage && (
         <div className="bg-green-500 text-white p-2 rounded mb-4">
           {successMessage}
         </div>
       )}
 
-      {/* Add/Edit product form */}
       <form onSubmit={formik.handleSubmit} className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
@@ -154,7 +165,7 @@ const AdminPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {displayedProducts.map((product) => (
             <tr key={product.id}>
               <td className="border px-4 py-2">{product.id}</td>
               <td className="border px-4 py-2">{product.name}</td>
@@ -184,6 +195,23 @@ const AdminPage: React.FC = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        pageCount={Math.ceil(products.length / productsPerPage)} // Tong trang
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"flex justify-center my-4"}
+        pageClassName={"mx-1"}
+        pageLinkClassName={"px-4 py-2 border rounded"}
+        previousClassName={"mx-1"}
+        nextClassName={"mx-1"}
+        activeClassName={"bg-blue-500 text-white"}
+      />
     </div>
   );
 };

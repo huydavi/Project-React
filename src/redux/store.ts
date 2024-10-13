@@ -3,13 +3,15 @@ import cartSlice from "./Slices/cartSlice";
 import dataSlice from "./Slices/dataSlice";
 import searchSlice from "./Slices/searchSlice";
 import userSlice from "./Slices/userSlice";
+import orderSlice from "./Slices/orderSlice";
+import { addOrder, selectOrders } from "./Slices/orderSlice";
 const store = configureStore({
   reducer: {
-    /** Đây là nơi import các slices */
     cart: cartSlice,
     data: dataSlice,
     search: searchSlice,
     user: userSlice,
+    order: orderSlice,
   },
 });
 

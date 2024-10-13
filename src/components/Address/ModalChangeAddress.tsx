@@ -4,8 +4,6 @@ interface ModalChangeAddressProps {
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   children?: ReactNode;
-  //   ReactNode: Đây là kiểu của children trong React, dùng để biểu thị bất kỳ nội dung nào có thể được render (text, JSX, component...),
-  //   children?: Dấu ? cho phép children là một prop không bắt buộc (optional).
 }
 
 const ModalChangeAddress: React.FC<ModalChangeAddressProps> = ({

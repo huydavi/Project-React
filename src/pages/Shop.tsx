@@ -3,8 +3,8 @@ import ProductCard from "../components/Cart/ProductCard";
 
 const Shop = () => {
   return (
-    <div className="">
-      <ProductCard title="Shop" />
+    <div className="container mx-auto px-4 pb-12">
+      <ProductCard title="SHOP" />
     </div>
   );
 };

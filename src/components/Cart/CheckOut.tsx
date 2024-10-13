@@ -1,10 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectCartItems, CartItem } from "../../redux/Slices/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectCartItems,
+  CartItem,
+  clearCart,
+} from "../../redux/Slices/cartSlice";
+import { addOrder } from "../../redux/Slices/orderSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { v4 as uuidv4 } from "uuid"; 
+import { useNavigate } from "react-router-dom";
 
 const Checkout: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const items = useSelector(selectCartItems);
 
   const totalPrice = items.reduce(
@@ -12,7 +21,6 @@ const Checkout: React.FC = () => {
     0
   );
 
-  // Schema validation using Yup
   const validationSchema = Yup.object({
     shippingAddress: Yup.string()
       .min(10, "Address is too short")
@@ -31,7 +39,6 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6 flex">
-      {/* Left Side: Checkout Form */}
       <div className="w-2/3 mr-6">
         <h2 className="text-3xl font-bold mb-6 text-center">Checkout</h2>
 
@@ -44,14 +51,37 @@ const Checkout: React.FC = () => {
             cardCVC: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log("Form values", values);
-            // Handle form submission here
+          onSubmit={(values, { resetForm }) => {
+            // Tạo đơn hàng mới
+            const newOrder = {
+              id: uuidv4(),
+              items,
+              shippingAddress: values.shippingAddress,
+              paymentMethod: values.paymentMethod,
+              totalPrice,
+              createdAt: new Date().toISOString(),
+            };
+
+            console.log("New Order:", newOrder);
+            // Lưu đơn hàng vào Redux store
+            dispatch(addOrder(newOrder));
+
+            // Xóa giỏ hàng sau khi đặt hàng thành công
+            dispatch(clearCart());
+
+            // Reset form
+            resetForm();
+
+            // Hiển thị thông báo
             alert("Order placed successfully!");
+
+            // Điều hướng người dùng đến trang lịch sử đơn hàng
+            navigate("/order-history");
           }}
         >
           {({ isSubmitting }) => (
             <Form className="bg-white p-6 shadow-lg rounded-lg">
+              {/* Shipping Address */}
               <div className="mb-4">
                 <label htmlFor="shippingAddress" className="block mb-2">
                   Shipping Address
@@ -69,6 +99,7 @@ const Checkout: React.FC = () => {
                 />
               </div>
 
+              {/* Payment Method */}
               <div className="mb-4">
                 <label htmlFor="paymentMethod" className="block mb-2">
                   Payment Method
@@ -89,7 +120,7 @@ const Checkout: React.FC = () => {
                 />
               </div>
 
-              {/* Fields for Credit Card Information */}
+              {/* Card Number */}
               <div className="mb-4">
                 <label htmlFor="cardNumber" className="block mb-2">
                   Card Number
@@ -107,6 +138,7 @@ const Checkout: React.FC = () => {
                 />
               </div>
 
+              {/* Card Expiry */}
               <div className="mb-4">
                 <label htmlFor="cardExpiry" className="block mb-2">
                   Expiry Date
@@ -125,6 +157,7 @@ const Checkout: React.FC = () => {
                 />
               </div>
 
+              {/* CVC */}
               <div className="mb-4">
                 <label htmlFor="cardCVC" className="block mb-2">
                   CVC
@@ -163,7 +196,7 @@ const Checkout: React.FC = () => {
         </Formik>
       </div>
 
-      {/* Right Side: Product Summary */}
+      {/* Phần tóm tắt đơn hàng */}
       <div className="w-1/3 bg-gray-100 p-4 rounded-lg shadow-lg">
         <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
         <ul className="divide-y divide-gray-300">

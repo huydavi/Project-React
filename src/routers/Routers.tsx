@@ -11,6 +11,9 @@ import ProductCartDetail from "../components/Cart/ProductCartDetail";
 import LoginForm from "../components/Auth/LoginForm";
 import RegisterForm from "../components/Auth/RegisterForm";
 import AdminPage from "../pages/AdminPage";
+import Order from "../pages/Order";
+import OrderHistory from "../components/Cart/OrderHistory";
+import Admin from "../pages/Admin";
 
 function Routers() {
   return (
@@ -22,10 +25,11 @@ function Routers() {
         <Route path="/login" element={<LoginForm />}></Route>
         <Route path="/register" element={<RegisterForm />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/admin" element={<AdminPage />}></Route>
+        <Route path="/admin" element={<Admin />}></Route>
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/products/:id" element={<ProductCartDetail />} />
+        <Route path="/order-history" element={<OrderHistory />} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Sidebar from "../components/Sidebar";
 import Hero from "../components/Hero";
 import InforSection from "../components/InforSection";
 import Categories from "../components/Categories";
 import ProductCard from "../components/Cart/ProductCard";
+import ProductCarousel from "../components/Cart/ProductCarousel";
 
 const Homepage = () => {
   return (
@@ -19,7 +20,8 @@ const Homepage = () => {
         <Categories />
       </div>
       <div>
-        <ProductCard title="Top Product" />
+        {/* <ProductCard title="Top Product" /> */}
+        <ProductCarousel />
       </div>
     </div>
   );

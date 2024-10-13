@@ -12,6 +12,7 @@ import { addToCart } from "../../redux/Slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import SortOptions from "./SortOptions";
 import { selectSearchTerm } from "../../redux/Slices/searchSlice";
+import { selectUser } from "../../redux/Slices/userSlice";
 
 interface ProductCardProps {
   title: string;
@@ -22,9 +23,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
   const allItems = useSelector(selectAllData);
   const searchTerm = useSelector(selectSearchTerm);
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3);
+  const [totalPages, setTotalPages] = useState(4);
   const limit = 5;
   const [sortKey, setSortKey] = useState<string>("quantity");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -49,15 +51,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
   }, [currentPage, dispatch, sortKey, sortOrder]);
 
   const handleAddToCart = (item: Product) => {
-    dispatch(
-      addToCart({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: 1,
-        image: item.image,
-      })
-    );
+    if (!user) {
+      alert("Bạn cần phải đăng nhập để thêm sản phẩm vào giỏ hàng");
+      navigate("/login");
+    } else {
+      dispatch(
+        addToCart({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+          image: item.image,
+        })
+      );
+      alert("Sản phẩm đã được thêm vào giỏ hàng");
+    }
   };
 
   const handleViewDetail = (id: number) => {
@@ -115,8 +123,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
             </div>
             <div
               onClick={() => handleAddToCart(item)}
-              className="absolute bottom-4 right-2 flex items-center justify-center w-8 h-8 bg-red-600 group text-white text-sm 
-            rounded-full hover:w-32 hover:bg-red-700 transition-all"
+              className="absolute bottom-4 right-2 flex items-center justify-center w-8 h-8 bg-blue-600 group text-white text-sm 
+            rounded-full hover:w-32 hover:bg-blue-700 transition-all"
             >
               <span className="group-hover:hidden">+</span>
               <span className="hidden group-hover:block">Add To Cart</span>

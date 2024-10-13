@@ -12,7 +12,7 @@ interface LoginFormValues {
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Redux dispatch function
+  const dispatch = useDispatch();
 
   const formik = useFormik<LoginFormValues>({
     initialValues: {
@@ -35,13 +35,13 @@ const LoginForm: React.FC = () => {
       );
 
       if (user) {
-        localStorage.setItem("loggedInUser", JSON.stringify(user)); // Save logged-in user data
+        localStorage.setItem("loggedInUser", JSON.stringify(user)); // Lưu người dùng đăng nhập vào localStorage
 
-        // Update the Redux state with the logged-in user
+        // Cập nhật Redux với người dùng đã đăng nhập
         dispatch(setUser({ username: user.username }));
 
         alert("Login successful!");
-        navigate("/"); // Redirect to homepage
+        navigate("/");
       } else {
         alert("Invalid email or password");
       }

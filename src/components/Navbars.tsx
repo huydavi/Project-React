@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTerm } from "../redux/Slices/searchSlice";
-import { selectTotalQuantity } from "../redux/Slices/cartSlice";
+import { clearCart, selectTotalQuantity } from "../redux/Slices/cartSlice";
 import { logout, setUser } from "../redux/Slices/userSlice";
 
 const Navbars: React.FC = () => {
@@ -14,7 +14,6 @@ const Navbars: React.FC = () => {
   const username = useSelector((state: any) => state.user.username);
 
   useEffect(() => {
-    // Kiểm tra nếu có người dùng trong localStorage và cập nhật Redux
     const user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
     if (user) {
       dispatch(setUser({ username: user.username }));
@@ -27,7 +26,8 @@ const Navbars: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
-    dispatch(logout()); // Cập nhật trạng thái người dùng trong Redux
+    dispatch(logout());
+    dispatch(clearCart());
     navigate("/login");
   };
 
@@ -98,6 +98,9 @@ const Navbars: React.FC = () => {
         </Link>
         <Link to="/admin" className="hover:underline">
           Admin
+        </Link>
+        <Link to="/order-history" className="hover:underline">
+          Order
         </Link>
       </div>
     </nav>
