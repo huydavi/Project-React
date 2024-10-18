@@ -18,6 +18,17 @@ const AdminPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const productsPerPage = 5;
 
+  // Tự động xóa thông báo sau 3 giây
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
   useEffect(() => {
     axios
       .get("http://localhost:3000/products")
@@ -126,7 +137,7 @@ const AdminPage: React.FC = () => {
             type="number"
             name="price"
             placeholder="Product Price"
-            value={formik.values.price}
+            value={formik.values.price === 0 ? "" : formik.values.price}
             onChange={formik.handleChange}
             className="border rounded p-2 w-full"
           />

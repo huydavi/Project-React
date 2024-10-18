@@ -115,14 +115,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ title }) => {
             />
             <h3>{item.name}</h3>
             <p>${item.price}</p>
-            <p>Quantity:{item.quantity}</p>
+            <p>Quantity:{item.quantity ? item.quantity : 0}</p>
             <div className="flex items-center mt-2">
               {[...Array(5)].map((_, index) => (
                 <FaStar key={index} className="text-yellow-500" />
               ))}
             </div>
             <div
-              onClick={() => handleAddToCart(item)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart(item);
+              }}
               className="absolute bottom-4 right-2 flex items-center justify-center w-8 h-8 bg-blue-600 group text-white text-sm 
             rounded-full hover:w-32 hover:bg-blue-700 transition-all"
             >

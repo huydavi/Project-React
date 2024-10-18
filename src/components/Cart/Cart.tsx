@@ -107,10 +107,13 @@ const Cart: React.FC = () => {
           <span>Total Items: </span>
           <span>{totalQuantity}</span>
         </div>
-        <div className="my-2">
-          <p>Shipping: </p>
-          <p>Shipping to: </p>
-          <span>{address}</span>
+        <div
+          style={{ alignItems: "center" }}
+          className="my-2 flex justify-between"
+        >
+          <p>
+            Shipping to: <span>{address}</span>
+          </p>
           <button
             onClick={() => setIsModalOpen(true)}
             className="mt-2 text-blue-500"
@@ -120,7 +123,7 @@ const Cart: React.FC = () => {
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-semibold">
-            Total Price:
+            Total Price:{" "}
             <span className="text-blue-600">${totalPrice.toFixed(2)}</span>
           </h3>
         </div>
